@@ -7,5 +7,5 @@ Aplicação utiliza estruturas de dados como structs e listas para organizar as 
  - [Cauã Augusto Machado de Negreiros](https://github.com/cauaaugustow)
  - [Ryan Emanuel Lima Miranda](https://github.com/ryanlimaw)
  - [Leonardo Lucas de Brito Silva](https://github.com/leonardolucasbs)
- - [Lucca de Sena Barbosa)](https://github.com/luccasena)
+ - [Lucca de Sena Barbosa](https://github.com/luccasena)
  - [Maximus Feitoza Lira Cunha](https://github.com/MaxFeitoza)
