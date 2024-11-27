@@ -91,14 +91,24 @@ void opcao1_cadastrarVeiculos(CadastroCarros *cadastro){
 
 }
 
+void opcao5_mostrarCarros(char *base_dados){
+
+
+}
+
 int main(){
     setlocale(LC_ALL,"");
 
-    int escolha_usuario;
     Veiculos cadastro;
+
+    int escolha_usuario;
     char registro_carro[110] = "";
+    char registros_de_carros[50][110];
+    int i = 0;
+
 
     while(true){
+
 
         cabecalho();
         linhas();
@@ -111,14 +121,15 @@ int main(){
             case 1:
                 printf(" Você escolheu o cadastro de carros! [1]\n");
                 linhas();
+
                 opcao1_cadastrarVeiculos(&cadastro);
 
                 linhas();
-                strcat(registro_carro, cadastro.nome);
-                strcat(registro_carro, cadastro.marca);
-                strcat(registro_carro, cadastro.tipo);
 
-                printf("%s", registro_carro);
+                snprintf(registros_de_carros[i], sizeof(registros_de_carros[i])," Carro [%d]: %s Marca: %s Tipo: %s \n",
+                         i+1,cadastro.nome, cadastro.marca, cadastro.tipo);
+                i++;
+                limpar_tela();
 
                 break;
             case 2:
@@ -134,7 +145,24 @@ int main(){
 
                 break;
             case 5:
-                printf(" Você escolheu o ver a listagem de veículos disponíveis e alugados! [5]\n");
+                while(true){
+                    printf(" Você escolheu o ver a listagem de veículos disponíveis e alugados! [5]\n");
+                    linhas();
+                    for(int cont = 0; cont < i; cont++){
+                        puts(registros_de_carros[cont]);
+                    }
+
+                    printf("Deseja sair da listagem? [1 - Sim]: ");
+                    scanf("%d", &escolha_usuario);
+                    if(escolha_usuario == 1){
+                        break;
+                    }else{
+                        limpar_tela();
+                        printf("Opção Inválida! Tente Novamente...\n");
+                        linhas();
+                        }
+                }
+                limpar_tela();
 
                 break;
             case 6:
