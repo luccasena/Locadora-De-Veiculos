@@ -120,7 +120,7 @@ void opcao2_cadastrarClientes(Clientes *cadastro2){
 
 
 int main(){
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL,"pt_BR.UTF-8");
 
     int escolha_usuario;
 
@@ -201,12 +201,12 @@ int main(){
 
                 break;
             case 4:
-                printf(" Você escolheu o calcular preço do aluguel! [4]\n");
+                printf(" Você escolheu calcular preço do aluguel! [4]\n");
 
                 break;
             case 5:
                 while(true){
-                    printf(" Você escolheu o ver a listagem de veículos disponíveis e alugados! [5]\n");
+                    printf(" Você escolheu ver a listagem de veículos disponíveis e alugados! [5]\n");
                     linhas();
                     for(int cont = 0; cont < i_carro; cont++){
                         puts(registros_de_carros[cont]);
@@ -226,8 +226,22 @@ int main(){
 
                 break;
             case 6:
-                printf(" Você escolheu o ver os créditos! [6]\n");
-
+                while(true){
+                printf(" Você escolheu ver os créditos! [6]\n");
+                linhas();
+                printf("Desenvolvido por:\nLucca de Sena\nMaximus Feitoza\nLeonardo Lucas1\nCauã Augusto\nRyan Emanuel\n");
+                linhas();
+                printf("Deseja sair da listagem? [1 - Sim]: ");
+                scanf("%d", &escolha_usuario);
+                if(escolha_usuario == 1){
+                    break;
+                }else{
+                    limpar_tela();
+                    printf("Opção Inválida! Tente Novamente...\n");
+                    linhas();
+                    }
+                }
+                limpar_tela();
                 break;
             case 0:
 
