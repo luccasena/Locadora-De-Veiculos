@@ -4,15 +4,20 @@
 #include <string.h>
 #include <locale.h>
 
+/// -------------------------  1. Funções Visuais  --------------------------- //
+
+// 1.1 - Função que imprime linhas:
 void linhas(){
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
-
 }
+
+// 1.2 - Função que limpa os dados imprimindos anteriormente no terminal, está configuração funciona apenas no Windows:
 
 void limpar_tela(){
     system("cls");
 }
 
+// 1.3 - Função que imprime o cabeçalho do nosso programa:
 void cabecalho(){
         linhas();
         printf("          Webmotors           \n");
@@ -26,8 +31,10 @@ void cabecalho(){
         printf("[0] - Sair\n");
 }
 
-// ------------------------------------------------------------------------- //
 
+/// ------------------------- 2. Estrutura de Dados  -------------------------- //
+
+// 2.1 - Estrututa para o cadastramento de carros:
 typedef struct CadastroCarros{
         char    marca[50];
         char    nome[50];
@@ -35,19 +42,23 @@ typedef struct CadastroCarros{
 
 }Veiculos;
 
+
+/// -----------------  3. Funções para a Manipulação de dados  -----------------//
+
+// 3.1 - Função que irá cadastrar carros, conforme os dados fornecidos pelo usuário:
 void opcao1_cadastrarVeiculos(CadastroCarros *cadastro){
 
-    linhas();
-    getchar();
+    getchar(); // Limpa o Buffer do teclado
 
-
+    // Solicita os dados para o usuário sobre marca e nome do carro:
+    // Aqui, são utilizados conceitos de ponteiros com objetivo de enviar os dados para a função main do programa:
     printf("Digite a marca do carro: ");
     fgets(cadastro->marca, sizeof(cadastro->marca), stdin);
 
     printf("Digite o nome do carro: ");
     fgets(cadastro->nome, sizeof(cadastro->nome), stdin);
 
-
+    // Aqui, é utilizado um while infinito para tratar erros de índices digitados incorretamente pelo usuário:
     int tipo;
     while(true){
         printf("[1] - Normal;\n[2] - Elétrico;\n[3] - Híbrido;\n");
@@ -59,6 +70,8 @@ void opcao1_cadastrarVeiculos(CadastroCarros *cadastro){
             linhas();
         }
         else{
+
+            // Caso o usuário digite os índices corretamente, utilizamos a função strcpy que irá cadastrar o tipo conforme o índice escolhido:
             switch(tipo){
                 case 1:
                     strcpy(cadastro->tipo, "Normal");
@@ -97,6 +110,7 @@ int main(){
         switch(escolha_usuario){
             case 1:
                 printf(" Você escolheu o cadastro de carros! [1]\n");
+                linhas();
                 opcao1_cadastrarVeiculos(&cadastro);
 
                 linhas();
