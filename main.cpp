@@ -154,6 +154,8 @@ int main(){
 
         limpar_tela();
         linhas();
+
+        int veiculo = 0;
         switch(escolha_usuario){
             case 1:
                 printf(" Você escolheu o cadastro de carros! [1]\n");
@@ -192,11 +194,11 @@ int main(){
             case 3:
                  printf(" Você escolheu registrar aluguel! [3]\n");
                  linhas();
-                 int veiculo = 0;
                  printf("Carros disponiveis: \n");
-                 for(int cont = 0; cont < i; cont++){
+                 for(int cont = 0; cont < i_carro; cont++){
                         puts(registros_de_carros[cont]);
                     }
+
                 break;
             case 4:
                 printf(" Você escolheu o calcular preço do aluguel! [4]\n");
