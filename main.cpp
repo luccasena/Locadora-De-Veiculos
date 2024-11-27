@@ -40,13 +40,13 @@ typedef struct CadastroCarros{
         char    nome[50];
         char    tipo[10];
 
-}Veiculos;
+}Carros;
 
 
 /// -----------------  3. Funções para a Manipulação de dados  -----------------//
 
 // 3.1 - Função que irá cadastrar carros, conforme os dados fornecidos pelo usuário:
-void opcao1_cadastrarVeiculos(CadastroCarros *cadastro){
+void opcao1_cadastrarVeiculos(Carros *cadastro){
 
     getchar(); // Limpa o Buffer do teclado
 
@@ -99,7 +99,7 @@ void opcao5_mostrarCarros(char *base_dados){
 int main(){
     setlocale(LC_ALL,"");
 
-    Veiculos cadastro;
+    Carros cadastro;
 
     int escolha_usuario;
     char registro_carro[110] = "";
@@ -126,6 +126,7 @@ int main(){
 
                 linhas();
 
+                // Essa função é responsável por concatenar os dados de uma struct em uma string
                 snprintf(registros_de_carros[i], sizeof(registros_de_carros[i])," Carro [%d]: %s Marca: %s Tipo: %s \n",
                          i+1,cadastro.nome, cadastro.marca, cadastro.tipo);
                 i++;
