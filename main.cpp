@@ -4,30 +4,30 @@
 #include <string.h>
 #include <locale.h>
 
-/// -------------------------  1. Fun��es Visuais  --------------------------- //
+/// -------------------------  1. Funções Visuais  --------------------------- //
 
-// 1.1 - Fun��o que imprime linhas:
+// 1.1 - Função que imprime linhas:
 void linhas(){
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
 }
 
-// 1.2 - Fun��o que limpa os dados imprimindos anteriormente no terminal, est� configura��o funciona apenas no Windows:
+// 1.2 - Função que limpa os dados imprimindos anteriormente no terminal, está configuração funciona apenas no Windows:
 
 void limpar_tela(){
     system("cls");
 }
 
-// 1.3 - Fun��o que imprime o cabe�alho do nosso programa:
+// 1.3 - Função que imprime o cabeçalho do nosso programa:
 void cabecalho(){
         linhas();
         printf("          Webmotors           \n");
         linhas();
-        printf("[1] - Cadastro de Ve�culos\n");
+        printf("[1] - Cadastro de Veículos\n");
         printf("[2] - Cadastro de Clientes\n");
         printf("[3] - Registrar Aluguel\n");
-        printf("[4] - Calcular pre�o do Aluguel\n");
-        printf("[5] - Listagem de ve�culos dispon�veis e alugados\n");
-        printf("[6] - Cr�ditos\n");
+        printf("[4] - Calcular preço do Aluguel\n");
+        printf("[5] - Listagem de veículos disponíveis e alugados\n");
+        printf("[6] - Créditos\n");
         printf("[0] - Sair\n");
 }
 
@@ -39,8 +39,10 @@ typedef struct CadastroCarros{
         char    marca[50];
         char    nome[50];
         char    tipo[10];
+        float   diaria;
 
 }Carros;
+
 // 2.2 - Estrutura para o cadastramento de clientes:
  typedef struct CadastroClientes {
     char nomeDoUsuario[50];
@@ -49,54 +51,60 @@ typedef struct CadastroCarros{
 }Clientes;
 
 
-/// -----------------  3. Fun��es para a Manipula��o de dados  -----------------//
+/// -----------------  3. Funções para a Manipulação de dados  -----------------//
 
-// 3.1 - Fun��o que ir� cadastrar carros, conforme os dados fornecidos pelo usu�rio:
+// 3.1 - Função que irá cadastrar carros, conforme os dados fornecidos pelo usuário:
 void opcao1_cadastrarVeiculos(Carros *cadastro){
 
     getchar(); // Limpa o Buffer do teclado
 
-    // Solicita os dados para o usu�rio sobre marca e nome do carro:
-    // Aqui, s�o utilizados conceitos de ponteiros com objetivo de enviar os dados para a fun��o main do programa:
+    // Solicita os dados para o usuário sobre marca e nome do carro:
+    // Aqui, são utilizados conceitos de ponteiros com objetivo de enviar os dados para a função main do programa:
+
     printf("Digite a marca do carro: ");
     fgets(cadastro->marca, sizeof(cadastro->marca), stdin);
 
     printf("Digite o nome do carro: ");
     fgets(cadastro->nome, sizeof(cadastro->nome), stdin);
 
-    // Aqui, � utilizado um while infinito para tratar erros de �ndices digitados incorretamente pelo usu�rio:
+    // Aqui, é utilizado um while infinito para tratar erros de índices digitados incorretamente pelo usuário:
     int tipo;
     while(true){
-        printf("[1] - Normal;\n[2] - El�trico;\n[3] - H�brido;\n");
-        printf("Digite o tipo do ve�culo: \n");
+        printf("[1] - Normal;\n[2] - Elétrico;\n[3] - Híbrido;\n");
+        printf("Digite o tipo do veículo: \n");
         scanf("%d", &tipo);
         if(tipo < 1 || tipo > 3){
             limpar_tela();
-            printf("Op��o Inv�lida! Tente novamente...\n");
+            printf("Opção Inválida! Tente novamente...\n");
             linhas();
         }
         else{
 
-            // Caso o usu�rio digite os �ndices corretamente, utilizamos a fun��o strcpy que ir� cadastrar o tipo conforme o �ndice escolhido:
+            // Caso o usuário digite os índices corretamente, utilizamos a função strcpy que irá cadastrar o tipo conforme o índice escolhido:
             switch(tipo){
                 case 1:
                     strcpy(cadastro->tipo, "Normal");
                     break;
                 case 2:
-                    strcpy(cadastro->tipo, "El�trico");
+                    strcpy(cadastro->tipo, "Elétrico");
                     break;
                 case 3:
-                    strcpy(cadastro->tipo,  "H�brido");
+                    strcpy(cadastro->tipo,  "Híbrido");
                     break;
 
             }
             break;
         }
+
+        printf("Digite a diária do veiculo: ");
+        scanf("%f", &cadastro->diaria);
+
         limpar_tela();
     }
 
 }
-// 3.2 - Fun��o que ir� cadastrar dados do cliente, conforme os dados fornecidos pelo usu�rio:
+
+// 3.2 - Função que irá cadastrar dados do cliente, conforme os dados fornecidos pelo usuário:
 void opcao2_cadastrarClientes(Clientes *cadastro2){
     getchar();
 
@@ -106,7 +114,7 @@ void opcao2_cadastrarClientes(Clientes *cadastro2){
     printf("Digite seu cpf: ");
     fgets(cadastro2->cpf, sizeof(cadastro2->cpf), stdin);
 
-    printf("Digite seu n�mero de telefone: ");
+    printf("Digite seu número de telefone: ");
     fgets(cadastro2->telefone, sizeof(cadastro2->telefone), stdin);
 }
 
@@ -114,18 +122,26 @@ void opcao2_cadastrarClientes(Clientes *cadastro2){
 int main(){
     setlocale(LC_ALL,"");
 
+    int escolha_usuario;
+
+    // Registro de Carros
     Carros cadastro;
 
-    int escolha_usuario;
-    char registro_carro[110] = "";
-    char registros_de_carros[50][110];
     int i_carro = 0;
+    int quantidade_carros = 1;
 
-    //registro de clientes:
-    int i_cliente = 0;
+    char registro_carro[110] = "";
+    char registros_de_carros[quantidade_carros][110];
+    float valor_de_diaria[quantidade_carros];
+
+    // Registro de Clientes:
     Clientes cadastro2;
+
+    int i_cliente = 0;
+    int quantidade_cliente = 1;
+
     char registro_cliente[110] = "";
-    char registros_de_clientes[50][110];
+    char registros_de_clientes[quantidade_cliente][110];
 
 
     while(true){
@@ -133,59 +149,62 @@ int main(){
 
         cabecalho();
         linhas();
-        printf("Selecione algum das op��es acima conforme seu �ndice: ");
+        printf("Selecione algum das opções acima conforme seu índice: ");
         scanf("%d", &escolha_usuario);
 
         limpar_tela();
         linhas();
         switch(escolha_usuario){
             case 1:
-                printf(" Voc� escolheu o cadastro de carros! [1]\n");
+                printf(" Você escolheu o cadastro de carros! [1]\n");
                 linhas();
 
                 opcao1_cadastrarVeiculos(&cadastro);
 
                 linhas();
 
-                // Essa fun��o � respons�vel por concatenar os dados de uma struct em uma string
-                snprintf(registros_de_carros[i_carro], sizeof(registros_de_carros[i_carro])," Carro [%d]: %s Marca: %s Tipo: %s \n",
-                         i_carro+1,cadastro.nome, cadastro.marca, cadastro.tipo);
+                // Essa função é responsável por concatenar os dados de uma struct em uma string:
+                snprintf(registros_de_carros[i_carro], sizeof(registros_de_carros[i_carro])," Carro [%d]:\n Nome: %s Marca: %s Tipo: %s \n",
+                         i_carro,cadastro.nome, cadastro.marca, cadastro.tipo);
+
+                valor_de_diaria[i_carro] = cadastro.diaria;
+
                 i_carro++;
+                quantidade_carros++;
                 limpar_tela();
 
                 break;
             case 2:
-                printf(" Voc� escolheu o cadastro de clientes! [2]\n");
+                printf(" Você escolheu o cadastro de clientes! [2]\n");
                 linhas();
                 opcao2_cadastrarClientes(&cadastro2);
 
                 linhas();
-                // Essa fun��o � respons�vel por concatenar os dados de uma struct em uma string
+                // Essa função é responsável por concatenar os dados de uma struct em uma string
                 snprintf(registros_de_clientes[i_cliente], sizeof(registros_de_clientes[i_cliente])," Cliente [%d]: %s cpf: %s telefone: %s \n",
                          i_cliente+1,cadastro2.nomeDoUsuario, cadastro2.cpf, cadastro2.telefone);
                 i_cliente++;
+                quantidade_cliente++;
                 limpar_tela();
 
 
                 break;
             case 3:
-                printf(" Você escolheu registrar aluguel! [3]\n");
-                linhas();
-                int veiculo = 0;
-                printf("Carros disponiveis: \n");
-                for(int cont = 0; cont < i; cont++){
+                 printf(" Você escolheu registrar aluguel! [3]\n");
+                 linhas();
+                 int veiculo = 0;
+                 printf("Carros disponiveis: \n");
+                 for(int cont = 0; cont < i; cont++){
                         puts(registros_de_carros[cont]);
                     }
-                 
-
                 break;
             case 4:
-                printf(" Voc� escolheu o calcular pre�o do aluguel! [4]\n");
+                printf(" Você escolheu o calcular preço do aluguel! [4]\n");
 
                 break;
             case 5:
                 while(true){
-                    printf(" Voc� escolheu o ver a listagem de ve�culos dispon�veis e alugados! [5]\n");
+                    printf(" Você escolheu o ver a listagem de veículos disponíveis e alugados! [5]\n");
                     linhas();
                     for(int cont = 0; cont < i_carro; cont++){
                         puts(registros_de_carros[cont]);
@@ -197,7 +216,7 @@ int main(){
                         break;
                     }else{
                         limpar_tela();
-                        printf("Op��o Inv�lida! Tente Novamente...\n");
+                        printf("Opção Inválida! Tente Novamente...\n");
                         linhas();
                         }
                 }
@@ -205,14 +224,14 @@ int main(){
 
                 break;
             case 6:
-                printf(" Voc� escolheu o ver os cr�ditos! [6]\n");
+                printf(" Você escolheu o ver os créditos! [6]\n");
 
                 break;
             case 0:
 
                 break;
             default:
-                printf("Op��o Inv�lida!, Tente novamente...\n");
+                printf("Opção Inválida!, Tente novamente...\n");
 
         }
 
