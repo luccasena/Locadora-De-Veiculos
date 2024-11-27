@@ -41,6 +41,12 @@ typedef struct CadastroCarros{
         char    tipo[10];
 
 }Carros;
+// 2.2 - Estrutura para o cadastramento de clientes:
+ typedef struct CadastroClientes {
+    char nomeDoUsuario[50];
+    char cpf[13];
+    char telefone[11];
+}Clientes;
 
 
 /// -----------------  3. Funções para a Manipulação de dados  -----------------//
@@ -90,11 +96,20 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
     }
 
 }
+// 3.2 - Função que irá cadastrar dados do cliente, conforme os dados fornecidos pelo usuário:
+void opcao2_cadastrarClientes(Clientes *cadastro2){
+    getchar();
 
-void opcao5_mostrarCarros(char *base_dados){
+    printf("Digite seu nome: ");
+    fgets(cadastro2->nomeDoUsuario, sizeof(cadastro2->nomeDoUsuario), stdin);
 
+    printf("Digite seu cpf: ");
+    fgets(cadastro2->cpf, sizeof(cadastro2->cpf), stdin);
 
+    printf("Digite seu número de telefone: ");
+    fgets(cadastro2->telefone, sizeof(cadastro2->telefone), stdin);
 }
+
 
 int main(){
     setlocale(LC_ALL,"");
@@ -104,7 +119,13 @@ int main(){
     int escolha_usuario;
     char registro_carro[110] = "";
     char registros_de_carros[50][110];
-    int i = 0;
+    int i_carro = 0;
+
+    //registro de clientes:
+    int i_cliente = 0;
+    Clientes cadastro2;
+    char registro_cliente[110] = "";
+    char registros_de_clientes[50][110];
 
 
     while(true){
@@ -127,14 +148,24 @@ int main(){
                 linhas();
 
                 // Essa função é responsável por concatenar os dados de uma struct em uma string
-                snprintf(registros_de_carros[i], sizeof(registros_de_carros[i])," Carro [%d]: %s Marca: %s Tipo: %s \n",
-                         i+1,cadastro.nome, cadastro.marca, cadastro.tipo);
-                i++;
+                snprintf(registros_de_carros[i_carro], sizeof(registros_de_carros[i_carro])," Carro [%d]: %s Marca: %s Tipo: %s \n",
+                         i_carro+1,cadastro.nome, cadastro.marca, cadastro.tipo);
+                i_carro++;
                 limpar_tela();
 
                 break;
             case 2:
                 printf(" Você escolheu o cadastro de clientes! [2]\n");
+                linhas();
+                opcao2_cadastrarClientes(&cadastro2);
+
+                linhas();
+                // Essa função é responsável por concatenar os dados de uma struct em uma string
+                snprintf(registros_de_clientes[i_cliente], sizeof(registros_de_clientes[i_cliente])," Cliente [%d]: %s cpf: %s telefone: %s \n",
+                         i_cliente+1,cadastro2.nomeDoUsuario, cadastro2.cpf, cadastro2.telefone);
+                i_cliente++;
+                limpar_tela();
+
 
                 break;
             case 3:
@@ -149,7 +180,7 @@ int main(){
                 while(true){
                     printf(" Você escolheu o ver a listagem de veículos disponíveis e alugados! [5]\n");
                     linhas();
-                    for(int cont = 0; cont < i; cont++){
+                    for(int cont = 0; cont < i_carro; cont++){
                         puts(registros_de_carros[cont]);
                     }
 
