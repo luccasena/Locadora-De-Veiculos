@@ -31,7 +31,6 @@ void cabecalho(){
         printf("[0] - Sair\n");
 }
 
-
 /// ------------------------- 2. Estrutura de Dados  -------------------------- //
 
 // 2.1 - Estrututa para o cadastramento de carros:
@@ -130,7 +129,6 @@ int main(){
     Carros cadastro;
 
     int i_carro = 0;
-    int quantidade_carros = 1;
 
     char registro_carro[110] = "";
     char registros_de_carros[30][110];
@@ -140,10 +138,9 @@ int main(){
     Clientes cadastro2;
 
     int i_cliente = 0;
-    int quantidade_cliente = 1;
 
     char registro_cliente[110] = "";
-    char registros_de_clientes[quantidade_cliente][110];
+    char registros_de_clientes[30][110];
 
 
     while(true){
@@ -173,7 +170,6 @@ int main(){
                 valor_de_diaria[i_carro] = cadastro.diaria;
 
                 i_carro++;
-                quantidade_carros++;
                 limpar_tela();
 
                 break;
@@ -186,8 +182,8 @@ int main(){
                 // Essa função é responsável por concatenar os dados de uma struct em uma string
                 snprintf(registros_de_clientes[i_cliente], sizeof(registros_de_clientes[i_cliente])," Cliente [%d]: %s cpf: %s telefone: %s \n",
                          i_cliente+1,cadastro2.nomeDoUsuario, cadastro2.cpf, cadastro2.telefone);
+
                 i_cliente++;
-                quantidade_cliente++;
                 limpar_tela();
 
 
@@ -202,7 +198,41 @@ int main(){
 
                 break;
             case 4:
-                printf(" Você escolheu calcular preço do aluguel! [4]\n");
+                while(true){
+                    int indice_carro;
+                    int dias;
+                    printf(" Você escolheu calcular preço do aluguel! [4]\n");
+                    for(int cont = 0; cont < i_carro; cont++){
+                        puts(registros_de_carros[cont]);
+                        printf("Diária: R$%.2f\n", valor_de_diaria[cont]);
+                        linhas();
+                    }
+                    printf("Digite o índice do carro desejado para se calcular o aluguel: ");
+                    scanf("%d", &indice_carro);
+                    printf("Digite a quantidade de dias que o carro será utilizado: ");
+                    scanf("%d", &dias);
+                    limpar_tela();
+                    printf("Consulta de Orçamento:\n");
+                    linhas();
+                    puts(registros_de_carros[indice_carro]);
+                    printf("Valor total do aluguel com uso de %d dias: %.2f \n", dias,dias*valor_de_diaria[indice_carro]);
+                    linhas();
+                    printf("Deseja sair? [1 - Sim | 0 - Não]: ");
+                    scanf("%d", &escolha_usuario);
+
+                    limpar_tela();
+                    if(escolha_usuario == 1){
+                        break;
+                    }else if(escolha_usuario == 0){
+                        continue;
+                    }else{
+                        limpar_tela();
+                        printf("Opção Inválida! Tente Novamente...\n");
+                        linhas();
+                    }
+                    limpar_tela();
+                }
+
 
                 break;
             case 5:
@@ -212,13 +242,14 @@ int main(){
                     linhas();
                     for(int cont = 0; cont < i_carro; cont++){
                         puts(registros_de_carros[cont]);
-                        printf("Diária: R$%2.f\n", valor_de_diaria[cont]);
+                        printf("Diária: R$%.2f\n", valor_de_diaria[cont]);
                         linhas();
                     }
 
                     printf("Deseja sair da listagem? [1 - Sim]: ");
                     scanf("%d", &escolha_usuario);
                     if(escolha_usuario == 1){
+                        limpar_tela();
                         break;
                     }else{
                         limpar_tela();
@@ -226,7 +257,7 @@ int main(){
                         linhas();
                         }
                 }
-                limpar_tela();
+
 
                 break;
             case 6:
@@ -261,9 +292,6 @@ int main(){
             break;
         }
     }
-
-
-
 
     return 0;
 }
