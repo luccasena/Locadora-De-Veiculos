@@ -27,8 +27,9 @@ void cabecalho(){
         printf("[2] - Cadastro de Clientes\n");
         printf("[3] - Registrar Aluguel\n");
         printf("[4] - Calcular preço do Aluguel\n");
-        printf("[5] - Listagem de veículos disponíveis e alugados\n");
-        printf("[6] - Créditos\n");
+        printf("[5] - Listagem de Veículos\n");
+        printf("[6] - Listagem de Clientes\n");
+        printf("[7] - Créditos\n");
         printf("[0] - Sair\n");
 }
 
@@ -161,14 +162,67 @@ void opcao_mostrar_carros(int i_carro, char registros_de_carros[][110], float va
     }
 }
 
-// 3.4 - Função que irá calcular o preço do aluguel, conforme a diária especificada anteriormente:
-void opcao_calcular_aluguel(char registros_de_carros[][110], float valor_de_diaria[]){
+void opcao_mostrar_clientes(int i_cliente, char registros_de_clientes[][110]){
+
+    for(int cont = 0; cont < i_cliente; cont++){
+        puts(registros_de_clientes[cont]);
+        linhas();
+    }
+
+
+}
+
+// 3.5 - Função que irá calcular o preço do aluguel, conforme a diária especificada anteriormente:
+void opcao_calcular_aluguel(char registros_de_carros[][110], float valor_de_diaria[], int qnt_carros){
     int i_carro2, dias;
 
-    printf("Digite o índice do carro desejado para se calcular o aluguel: ");
-    scanf("%d", &i_carro2);
-    printf("Digite a quantidade de dias que o carro será utilizado: ");
-    scanf("%d", &dias);
+    if(qnt_carros == 0){
+        printf("Opção Indisponível no momento...\nNenhum veículo cadastrado!\n");
+        linhas();
+
+    }else{
+    while(true){
+        printf("Digite o índice do carro desejado para se calcular o aluguel: ");
+
+        if (scanf("%d", &i_carro2) != 1) {                  // Verifica se é um tipo diferente de inteiro.
+            limpar_tela();
+            linhas();
+            printf("Opção Inválida! Tente novamente.\n");
+            linhas();
+            opcao_mostrar_carros(qnt_carros, registros_de_carros, valor_de_diaria);
+            while (getchar() != '\n');                      // Limpa o buffer do Teclado.
+
+        }else{
+            if (i_carro2 >= 0 && i_carro2 < qnt_carros) {  // Verifica se o índice está no intervalo indicado.
+                break;
+
+           }else{
+                limpar_tela();
+                linhas();
+                printf("Opção fora do intervalo permitido! Tente novamente...\n");
+                linhas();
+                opcao_mostrar_carros(qnt_carros, registros_de_carros, valor_de_diaria);
+
+            }
+        }
+    }
+
+    while(true){
+        printf("Digite a quantidade de dias que o carro será utilizado: ");
+
+        if (scanf("%d", &dias) != 1) {                  // Verifica se é um tipo diferente de inteiro.
+            limpar_tela();
+            linhas();
+            printf("Opção Inválida! Tente novamente.\n");
+            linhas();
+            while (getchar() != '\n');                      // Limpa o buffer do Teclado.
+
+        }else{
+            break;
+        }
+
+    }
+
 
     limpar_tela();
     printf("Consulta de Orçamento:\n");
@@ -176,7 +230,7 @@ void opcao_calcular_aluguel(char registros_de_carros[][110], float valor_de_diar
     puts(registros_de_carros[i_carro2]);
     printf("Valor total do aluguel com uso de %d dias: %.2f \n", dias,dias*valor_de_diaria[i_carro2]);
     linhas();
-
+    }
 }
 
 /// ------------------------  4. Código Principal  -----------------------------//
@@ -222,7 +276,7 @@ int main(){
                 while (getchar() != '\n');                          // Limpa o buffer do Teclado.
 
             }else{
-                if (escolha_usuario >= 0 && escolha_usuario <= 6) { // Verifica se o índice está no intervalo indicado.
+                if (escolha_usuario >= 0 && escolha_usuario <= 7) { // Verifica se o índice está no intervalo indicado.
                     break;
 
             }   else {
@@ -270,6 +324,7 @@ int main(){
 
                 i_cliente++;
                 limpar_tela();
+                getchar();
 
                 break;
 
@@ -336,7 +391,8 @@ int main(){
 
                     opcao_mostrar_carros(i_carro, registros_de_carros, valor_de_diaria);
 
-                    opcao_calcular_aluguel(registros_de_carros, valor_de_diaria);
+                    opcao_calcular_aluguel(registros_de_carros, valor_de_diaria, i_carro);
+
                     while(true){
                         printf("Deseja sair? [1 - Sim | 0 - Não]: ");
                         if (scanf("%d", &sair_ou_nao) != 1) {               // Verifica se é um tipo diferente de inteiro.
@@ -398,8 +454,40 @@ int main(){
 
                 break;
             case 6:
+                getchar();
+
                 while(true){
-                    printf(" Você escolheu ver os créditos! [6]\n");
+
+                    printf(" Você escolheu ver a listagem de Clientes cadastrados! [6]\n");
+                    linhas();
+
+                    opcao_mostrar_clientes(i_cliente, registros_de_clientes);
+
+                    printf("Deseja sair? [1 - Sim]: ");
+                    if (scanf("%d", &sair_ou_nao) != 1){                    // Verifica se é um tipo diferente de inteiro.
+                        limpar_tela();
+                        printf("Opção Inválida! Tente novamente.\n");
+                        linhas();
+                        while (getchar() != '\n');                          // Limpa o buffer do Teclado.
+
+                    }else{
+                        if (sair_ou_nao == 1) {                             // Verifica se o índice está no intervalo indicado.
+                            limpar_tela();
+                            break;
+
+                       }else{
+                            limpar_tela();
+                            printf("Opção fora do intervalo permitido! Tente novamente...\n");
+                            linhas();
+                            }
+                        }
+                    }
+
+
+                break;
+            case 7:
+                while(true){
+                    printf(" Você escolheu ver os créditos! [7]\n");
                     linhas();
                     printf("Desenvolvido por:\nLucca de Sena\nMaximus Feitoza\nLeonardo Lucas1\nCauã Augusto\nRyan Emanuel\n");
                     linhas();
