@@ -162,6 +162,8 @@ void opcao_mostrar_carros(int i_carro, char registros_de_carros[][110], float va
     }
 }
 
+// 3.4 - Função que irá mostrar os clientes registrados na Locadora:
+
 void opcao_mostrar_clientes(int i_cliente, char registros_de_clientes[][110]){
 
     for(int cont = 0; cont < i_cliente; cont++){
@@ -173,6 +175,7 @@ void opcao_mostrar_clientes(int i_cliente, char registros_de_clientes[][110]){
 }
 
 // 3.5 - Função que irá calcular o preço do aluguel, conforme a diária especificada anteriormente:
+
 void opcao_calcular_aluguel(char registros_de_carros[][110], float valor_de_diaria[], int qnt_carros){
     int i_carro2, dias;
 
@@ -232,6 +235,7 @@ void opcao_calcular_aluguel(char registros_de_carros[][110], float valor_de_diar
     linhas();
     }
 }
+
 
 /// ------------------------  4. Código Principal  -----------------------------//
 
@@ -329,13 +333,16 @@ int main(){
                 break;
 
             case 3:
-                printf(" Voce escolheu registrar aluguel! [3]\n");
-                linhas();
-                int i , aux=0,veiculo = 0,id_carro , cont=0 , reposta_usuario;
-                char cpf_do_cliente[11];
-                int sair = 0;
-                struct registra_aluguel aluguel;
-                while(sair != 1){
+                if(i_carro == 0){
+                    printf("Opção Indisponível no momento...\nNenhum veículo cadastrado!\n");
+                }else{
+                    printf(" Voce escolheu registrar aluguel! [3]\n");
+                    linhas();
+                    int i , aux=0,veiculo = 0,id_carro , cont=0 , reposta_usuario;
+                    char cpf_do_cliente[11];
+                    int sair = 0;
+                    struct registra_aluguel aluguel;
+                    while(sair != 1){
                     if(*ponteiro_i_carro != 0){
                         printf("Carros disponiveis: \n");
 
@@ -382,6 +389,7 @@ int main(){
                         }
                     }
                 }
+            }
             break;
             case 4:
                 while(true){
@@ -425,64 +433,69 @@ int main(){
                 getchar();
 
                 while(true){
-
-                    printf(" Você escolheu ver a listagem de veículos disponíveis e alugados! [5]\n");
-                    linhas();
-
-                    opcao_mostrar_carros(i_carro, registros_de_carros, valor_de_diaria);
-
-                    printf("Deseja sair? [1 - Sim]: ");
-                    if (scanf("%d", &sair_ou_nao) != 1){                    // Verifica se é um tipo diferente de inteiro.
-                        limpar_tela();
-                        printf("Opção Inválida! Tente novamente.\n");
-                        linhas();
-                        while (getchar() != '\n');                          // Limpa o buffer do Teclado.
-
+                    if(i_carro == 0){
+                        printf("Opção Indisponível no momento...\nNenhum veículo cadastrado!\n");
+                        break;
                     }else{
-                        if (sair_ou_nao == 1) {                             // Verifica se o índice está no intervalo indicado.
-                            limpar_tela();
-                            break;
+                        printf(" Você escolheu ver a listagem de veículos disponíveis e alugados! [5]\n");
+                        linhas();
 
-                       }else{
+                        opcao_mostrar_carros(i_carro, registros_de_carros, valor_de_diaria);
+
+                        printf("Deseja sair? [1 - Sim]: ");
+                        if (scanf("%d", &sair_ou_nao) != 1){                    // Verifica se é um tipo diferente de inteiro.
                             limpar_tela();
-                            printf("Opção fora do intervalo permitido! Tente novamente...\n");
+                            printf("Opção Inválida! Tente novamente.\n");
                             linhas();
+                            while (getchar() != '\n');                          // Limpa o buffer do Teclado.
+
+                        }else{
+                            if (sair_ou_nao == 1) {                             // Verifica se o índice está no intervalo indicado.
+                                limpar_tela();
+                                break;
+
+                            }else{
+                                limpar_tela();
+                                printf("Opção fora do intervalo permitido! Tente novamente...\n");
+                                linhas();
                             }
                         }
                     }
-
+                }
 
                 break;
             case 6:
                 getchar();
+                if(i_carro == 0){
+                    printf("Opção Indisponível no momento...\nNenhum cliente cadastrado!\n");
+                }else{
+                    while(true){
 
-                while(true){
-
-                    printf(" Você escolheu ver a listagem de Clientes cadastrados! [6]\n");
-                    linhas();
-
-                    opcao_mostrar_clientes(i_cliente, registros_de_clientes);
-
-                    printf("Deseja sair? [1 - Sim]: ");
-                    if (scanf("%d", &sair_ou_nao) != 1){                    // Verifica se é um tipo diferente de inteiro.
-                        limpar_tela();
-                        printf("Opção Inválida! Tente novamente.\n");
+                        printf(" Você escolheu ver a listagem de Clientes cadastrados! [6]\n");
                         linhas();
-                        while (getchar() != '\n');                          // Limpa o buffer do Teclado.
 
-                    }else{
-                        if (sair_ou_nao == 1) {                             // Verifica se o índice está no intervalo indicado.
+                        opcao_mostrar_clientes(i_cliente, registros_de_clientes);
+
+                        printf("Deseja sair? [1 - Sim]: ");
+                        if (scanf("%d", &sair_ou_nao) != 1){                    // Verifica se é um tipo diferente de inteiro.
                             limpar_tela();
-                            break;
+                            printf("Opção Inválida! Tente novamente.\n");
+                            linhas();
+                            while (getchar() != '\n');                          // Limpa o buffer do Teclado.
 
-                       }else{
+                        }else{
+                            if (sair_ou_nao == 1) {                             // Verifica se o índice está no intervalo indicado.
+                                limpar_tela();
+                                break;
+
+                        }else{
                             limpar_tela();
                             printf("Opção fora do intervalo permitido! Tente novamente...\n");
                             linhas();
                             }
                         }
                     }
-
+                }
 
                 break;
             case 7:
