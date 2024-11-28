@@ -31,7 +31,6 @@ void cabecalho(){
         printf("[0] - Sair\n");
 }
 
-
 /// ------------------------- 2. Estrutura de Dados  -------------------------- //
 
 // 2.1 - Estrututa para o cadastramento de carros:
@@ -50,6 +49,11 @@ typedef struct CadastroCarros{
         char    telefone[11];
 }Clientes;
 
+typedef struct registra_aluguel{
+    char carro[110];
+    char cpf_cliente[13];
+    int  diaria;
+};
 
 /// -----------------  3. Funções para a Manipulação de dados  -----------------//
 
@@ -78,8 +82,8 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
             printf("Opção Inválida! Tente novamente...\n");
             linhas();
         }
-        else{
 
+        else{
             // Caso o usuário digite os índices corretamente, utilizamos a função strcpy que irá cadastrar o tipo conforme o índice escolhido:
             switch(tipo){
                 case 1:
@@ -92,8 +96,10 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
                     strcpy(cadastro->tipo,  "Híbrido");
                     break;
 
-            }
 
+            }
+            break;
+        }
         }
 
         getchar();
@@ -101,8 +107,7 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
         scanf("%f", &cadastro->diaria);
 
         limpar_tela();
-        break;
-    }
+
 
 }
 
@@ -124,13 +129,12 @@ void opcao2_cadastrarClientes(Clientes *cadastro2){
 int main(){
     setlocale(LC_ALL,"");
 
-    int escolha_usuario;
+    char escolha_usuario;
 
     // Registro de Carros
     Carros cadastro;
 
     int i_carro = 0;
-    int quantidade_carros = 1;
 
     char registro_carro[110] = "";
     char registros_de_carros[30][110];
@@ -140,10 +144,9 @@ int main(){
     Clientes cadastro2;
 
     int i_cliente = 0;
-    int quantidade_cliente = 1;
 
     char registro_cliente[110] = "";
-    char registros_de_clientes[quantidade_cliente][110];
+    char registros_de_clientes[30][110];
 
 
     while(true){
@@ -151,14 +154,14 @@ int main(){
         cabecalho();
         linhas();
         printf("Selecione algum das opções acima conforme seu índice: ");
-        scanf("%d", &escolha_usuario);
+        scanf(" %c", &escolha_usuario);
 
         limpar_tela();
         linhas();
 
         int veiculo = 0;
         switch(escolha_usuario){
-            case 1:
+            case '1':
                 printf(" Você escolheu o cadastro de carros! [1]\n");
                 linhas();
 
@@ -173,11 +176,12 @@ int main(){
                 valor_de_diaria[i_carro] = cadastro.diaria;
 
                 i_carro++;
-                quantidade_carros++;
                 limpar_tela();
-
+                int * ponteiro_i_carro;
+                int i_carro_valor = i_carro;
+                ponteiro_i_carro = &i_carro_valor;
                 break;
-            case 2:
+            case '2':
                 printf(" Você escolheu o cadastro de clientes! [2]\n");
                 linhas();
                 opcao2_cadastrarClientes(&cadastro2);
@@ -186,39 +190,122 @@ int main(){
                 // Essa função é responsável por concatenar os dados de uma struct em uma string
                 snprintf(registros_de_clientes[i_cliente], sizeof(registros_de_clientes[i_cliente])," Cliente [%d]: %s cpf: %s telefone: %s \n",
                          i_cliente+1,cadastro2.nomeDoUsuario, cadastro2.cpf, cadastro2.telefone);
+
                 i_cliente++;
-                quantidade_cliente++;
                 limpar_tela();
 
 
                 break;
-            case 3:
-                 printf(" Você escolheu registrar aluguel! [3]\n");
-                 linhas();
-                 printf("Carros disponiveis: \n");
-                 for(int cont = 0; cont < i_carro; cont++){
-                        puts(registros_de_carros[cont]);
+            case '3':
+                printf(" Voce escolheu registrar aluguel! [3]\n");
+                linhas();
+                int i , aux=0,veiculo = 0,id_carro , cont=0 , reposta_usuario;
+                char cpf_do_cliente[11];
+                int sair = 0;
+                struct registra_aluguel aluguel;
+                while(sair != 1){
+                    if(*ponteiro_i_carro != 0){
+                        printf("Carros disponiveis: \n");
+                        for(int cont = 0; cont < i_carro; cont++){
+                            puts(registros_de_carros[cont]);
+                            printf("Diária: R$%.2f\n", valor_de_diaria[cont]);
+                            linhas();
+                        }
+                        printf("Digite o ID do carro que ira ser alugado: ");
+                        scanf("%d",&id_carro);
+                        limpar_tela();
+                        linhas();
+                        printf("O carro %d foi selecionado \n",id_carro);
+                        printf("Carro [%d]:\n Nome: %s Marca: %s Tipo: %s \n",id_carro,cadastro.nome, cadastro.marca, cadastro.tipo);
+                        printf("Vamos para os dados do aluguel! \n");
+                        fflush(stdin);
+                        linhas();
+                        printf("Digite o cpf do cliente:");
+                        fgets(aluguel.cpf_cliente, sizeof(aluguel.cpf_cliente), stdin);
+                        fflush(stdin);
+                        linhas();
+                        printf("Digite o numero de diarias:");
+                        fgets(aluguel.cpf_cliente, sizeof(aluguel.cpf_cliente), stdin);
+                        linhas();
+                        printf("Otimo!\nAgora para verificarmos\ntem certeza que deseja registrar o aluguel desse carro?\n");
+                        linhas();
+                        printf("Carro[%d]:\nNome:%sMarca:%sTipo:%s\n",id_carro,cadastro.nome, cadastro.marca, cadastro.tipo);
+                        linhas();
+                        printf("Digite 1 para Sim\nDigite 2 para Nao\n");
+                        scanf("%d",&reposta_usuario);
+                        if(reposta_usuario == 1){
+                            printf("ALuguel registrado com sucesso \n");
+                            printf("Deseja sair da listagem? [1 - Sim]:");
+                            scanf("%d",&sair);
+                            if(sair == 1){
+                                limpar_tela();
+                                break;
+                            }
+                            else{
+                                limpar_tela();
+                                printf("Opcao Invalida! Tente Novamente...\n");
+                                linhas();
+                            }
+                        }
+                        else{
+                            limpar_tela();
+                        }
                     }
+                }
+            break;
+            case '4':
+                while(true){
+                    int indice_carro;
+                    int dias;
+                    printf(" Você escolheu calcular preço do aluguel! [4]\n");
+                    for(int cont = 0; cont < i_carro; cont++){
+                        puts(registros_de_carros[cont]);
+                        printf("Diária: R$%.2f\n", valor_de_diaria[cont]);
+                        linhas();
+                    }
+                    printf("Digite o índice do carro desejado para se calcular o aluguel: ");
+                    scanf("%d", &indice_carro);
+                    printf("Digite a quantidade de dias que o carro será utilizado: ");
+                    scanf("%d", &dias);
+                    limpar_tela();
+                    printf("Consulta de Orçamento:\n");
+                    linhas();
+                    puts(registros_de_carros[indice_carro]);
+                    printf("Valor total do aluguel com uso de %d dias: %.2f \n", dias,dias*valor_de_diaria[indice_carro]);
+                    linhas();
+                    printf("Deseja sair? [1 - Sim | 0 - Não]: ");
+                    scanf("%d", &escolha_usuario);
+
+                    limpar_tela();
+                    if(escolha_usuario == 1){
+                        break;
+                    }else if(escolha_usuario == 0){
+                        continue;
+                    }else{
+                        limpar_tela();
+                        printf("Opção Inválida! Tente Novamente...\n");
+                        linhas();
+                    }
+                    limpar_tela();
+                }
+
 
                 break;
-            case 4:
-                printf(" Você escolheu calcular preço do aluguel! [4]\n");
-
-                break;
-            case 5:
+            case '5':
                 getchar();
                 while(true){
                     printf(" Você escolheu ver a listagem de veículos disponíveis e alugados! [5]\n");
                     linhas();
                     for(int cont = 0; cont < i_carro; cont++){
                         puts(registros_de_carros[cont]);
-                        printf("Diária: R$%2.f\n", valor_de_diaria[cont]);
+                        printf("Diária: R$%.2f\n", valor_de_diaria[cont]);
                         linhas();
                     }
 
                     printf("Deseja sair da listagem? [1 - Sim]: ");
                     scanf("%d", &escolha_usuario);
                     if(escolha_usuario == 1){
+                        limpar_tela();
                         break;
                     }else{
                         limpar_tela();
@@ -226,10 +313,10 @@ int main(){
                         linhas();
                         }
                 }
-                limpar_tela();
+
 
                 break;
-            case 6:
+            case '6':
                 while(true){
                 printf(" Você escolheu ver os créditos! [6]\n");
                 linhas();
@@ -247,23 +334,20 @@ int main(){
                 }
                 limpar_tela();
                 break;
-            case 0:
-
+            case '0':
                 break;
+
             default:
                 printf("Opção Inválida!, Tente novamente...\n");
 
         }
 
-        if(escolha_usuario == 0){
+        if(escolha_usuario == '0'){
             limpar_tela();
             printf("Obrigado por utilizar nosso programa!\n");
             break;
         }
     }
-
-
-
 
     return 0;
 }

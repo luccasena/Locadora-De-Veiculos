@@ -49,6 +49,11 @@ typedef struct CadastroCarros{
         char    telefone[11];
 }Clientes;
 
+typedef struct registra_aluguel{
+    char carro[110];
+    char cpf_cliente[13];
+    int  diaria;
+};
 
 /// -----------------  3. Funções para a Manipulação de dados  -----------------//
 
@@ -172,7 +177,9 @@ int main(){
 
                 i_carro++;
                 limpar_tela();
-
+                int * ponteiro_i_carro;
+                int i_carro_valor = i_carro;
+                ponteiro_i_carro = &i_carro_valor;
                 break;
             case '2':
                 printf(" Você escolheu o cadastro de clientes! [2]\n");
@@ -190,14 +197,62 @@ int main(){
 
                 break;
             case '3':
-                 printf(" Você escolheu registrar aluguel! [3]\n");
-                 linhas();
-                 printf("Carros disponiveis: \n");
-                 for(int cont = 0; cont < i_carro; cont++){
-                        puts(registros_de_carros[cont]);
+                printf(" Voce escolheu registrar aluguel! [3]\n");
+                linhas();
+                int i , aux=0,veiculo = 0,id_carro , cont=0 , reposta_usuario;
+                char cpf_do_cliente[11];
+                int sair = 0;
+                struct registra_aluguel aluguel;
+                while(sair != 1){
+                    if(*ponteiro_i_carro != 0){
+                        printf("Carros disponiveis: \n");
+                        for(int cont = 0; cont < i_carro; cont++){
+                            puts(registros_de_carros[cont]);
+                            printf("Diária: R$%.2f\n", valor_de_diaria[cont]);
+                            linhas();
+                        }
+                        printf("Digite o ID do carro que ira ser alugado: ");
+                        scanf("%d",&id_carro);
+                        limpar_tela();
+                        linhas();
+                        printf("O carro %d foi selecionado \n",id_carro);
+                        printf("Carro [%d]:\n Nome: %s Marca: %s Tipo: %s \n",id_carro,cadastro.nome, cadastro.marca, cadastro.tipo);
+                        printf("Vamos para os dados do aluguel! \n");
+                        fflush(stdin);
+                        linhas();
+                        printf("Digite o cpf do cliente:");
+                        fgets(aluguel.cpf_cliente, sizeof(aluguel.cpf_cliente), stdin);
+                        fflush(stdin);
+                        linhas();
+                        printf("Digite o numero de diarias:");
+                        fgets(aluguel.cpf_cliente, sizeof(aluguel.cpf_cliente), stdin);
+                        linhas();
+                        printf("Otimo!\nAgora para verificarmos\ntem certeza que deseja registrar o aluguel desse carro?\n");
+                        linhas();
+                        printf("Carro[%d]:\nNome:%sMarca:%sTipo:%s\n",id_carro,cadastro.nome, cadastro.marca, cadastro.tipo);
+                        linhas();
+                        printf("Digite 1 para Sim\nDigite 2 para Nao\n");
+                        scanf("%d",&reposta_usuario);
+                        if(reposta_usuario == 1){
+                            printf("ALuguel registrado com sucesso \n");
+                            printf("Deseja sair da listagem? [1 - Sim]:");
+                            scanf("%d",&sair);
+                            if(sair == 1){
+                                limpar_tela();
+                                break;
+                            }
+                            else{
+                                limpar_tela();
+                                printf("Opcao Invalida! Tente Novamente...\n");
+                                linhas();
+                            }
+                        }
+                        else{
+                            limpar_tela();
+                        }
                     }
-
-                break;
+                }
+            break;
             case '4':
                 while(true){
                     int indice_carro;
