@@ -77,8 +77,8 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
             printf("Opção Inválida! Tente novamente...\n");
             linhas();
         }
-        else{
 
+        else{
             // Caso o usuário digite os índices corretamente, utilizamos a função strcpy que irá cadastrar o tipo conforme o índice escolhido:
             switch(tipo){
                 case 1:
@@ -91,8 +91,10 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
                     strcpy(cadastro->tipo,  "Híbrido");
                     break;
 
-            }
 
+            }
+            break;
+        }
         }
 
         getchar();
@@ -100,8 +102,7 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
         scanf("%f", &cadastro->diaria);
 
         limpar_tela();
-        break;
-    }
+
 
 }
 
@@ -123,7 +124,7 @@ void opcao2_cadastrarClientes(Clientes *cadastro2){
 int main(){
     setlocale(LC_ALL,"");
 
-    int escolha_usuario;
+    char escolha_usuario;
 
     // Registro de Carros
     Carros cadastro;
@@ -148,14 +149,14 @@ int main(){
         cabecalho();
         linhas();
         printf("Selecione algum das opções acima conforme seu índice: ");
-        scanf("%d", &escolha_usuario);
+        scanf(" %c", &escolha_usuario);
 
         limpar_tela();
         linhas();
 
         int veiculo = 0;
         switch(escolha_usuario){
-            case 1:
+            case '1':
                 printf(" Você escolheu o cadastro de carros! [1]\n");
                 linhas();
 
@@ -173,7 +174,7 @@ int main(){
                 limpar_tela();
 
                 break;
-            case 2:
+            case '2':
                 printf(" Você escolheu o cadastro de clientes! [2]\n");
                 linhas();
                 opcao2_cadastrarClientes(&cadastro2);
@@ -188,7 +189,7 @@ int main(){
 
 
                 break;
-            case 3:
+            case '3':
                  printf(" Você escolheu registrar aluguel! [3]\n");
                  linhas();
                  printf("Carros disponiveis: \n");
@@ -197,7 +198,7 @@ int main(){
                     }
 
                 break;
-            case 4:
+            case '4':
                 while(true){
                     int indice_carro;
                     int dias;
@@ -235,7 +236,7 @@ int main(){
 
 
                 break;
-            case 5:
+            case '5':
                 getchar();
                 while(true){
                     printf(" Você escolheu ver a listagem de veículos disponíveis e alugados! [5]\n");
@@ -260,7 +261,7 @@ int main(){
 
 
                 break;
-            case 6:
+            case '6':
                 while(true){
                 printf(" Você escolheu ver os créditos! [6]\n");
                 linhas();
@@ -278,15 +279,15 @@ int main(){
                 }
                 limpar_tela();
                 break;
-            case 0:
-
+            case '0':
                 break;
+
             default:
                 printf("Opção Inválida!, Tente novamente...\n");
 
         }
 
-        if(escolha_usuario == 0){
+        if(escolha_usuario == '0'){
             limpar_tela();
             printf("Obrigado por utilizar nosso programa!\n");
             break;
