@@ -138,18 +138,57 @@ void opcao1_cadastrarVeiculos(Carros *cadastro){
 
 // 3.2 - Função que irá cadastrar dados do cliente, conforme os dados fornecidos pelo usuário:
 
-void opcao2_cadastrarClientes(Clientes *cadastro2){
+#include <ctype.h>  // Para usar isdigit()
+#include <string.h>  // Para usar strlen()
+
+void opcao2_cadastrarClientes(Clientes *cadastro2) {
     getchar();
 
     printf("Digite seu nome: ");
     fgets(cadastro2->nomeDoUsuario, sizeof(cadastro2->nomeDoUsuario), stdin);
 
-    printf("Digite seu cpf: ");
-    fgets(cadastro2->cpf, sizeof(cadastro2->cpf), stdin);
+    while (true) {
+        printf("Digite seu CPF: ");
+        fgets(cadastro2->cpf, sizeof(cadastro2->cpf), stdin);
 
-    printf("Digite seu número de telefone: ");
+        // Remove o '\n' do final da string se existir
+        size_t len = strlen(cadastro2->cpf);
+        if (len > 0 && cadastro2->cpf[len - 1] == '\n') {
+            cadastro2->cpf[len - 1] = '\0';
+        }
+
+        // Verifica se o CPF tem exatamente 11 caracteres e se são todos números
+        if (strlen(cadastro2->cpf) != 11) {
+            limpar_tela();
+            printf("CPF incorreto! O CPF deve ter 11 dígitos.\n");
+            linhas();
+            continue;
+        }
+
+        bool cpf_valido = true;
+        for (int i = 0; i < 11; i++) {
+            if (!isdigit(cadastro2->cpf[i])) {
+                cpf_valido = false;
+                break;
+            }
+        }
+
+        if (!cpf_valido) {
+            limpar_tela();
+            printf("CPF inválido! Certifique-se de digitar apenas números.\n");
+            linhas();
+        } else {
+            break;
+        }
+    }
+    printf("Digite seu telefone: ");
     fgets(cadastro2->telefone, sizeof(cadastro2->telefone), stdin);
+
 }
+
+
+
+
 
 // 3.3 - Função que irá mostrar os carros disponíveis da Locadora de Veículos:
 
@@ -336,59 +375,92 @@ int main(){
                 if(i_carro == 0){
                     printf("Opção Indisponível no momento...\nNenhum veículo cadastrado!\n");
                 }else{
-                    printf(" Voce escolheu registrar aluguel! [3]\n");
+                    printf("Você escolheu registrar aluguel! [3]\n");
                     linhas();
-                    int i , aux=0,veiculo = 0,id_carro , cont=0 , reposta_usuario;
-                    char cpf_do_cliente[11];
-                    int sair = 0;
-                    struct registra_aluguel aluguel;
-                    while(sair != 1){
-                    if(*ponteiro_i_carro != 0){
-                        printf("Carros disponiveis: \n");
 
-                        opcao_mostrar_carros(i_carro, registros_de_carros, valor_de_diaria);
+                    int sair = 0, id_carro, diarias;
+                    char cpf_do_cliente[13];
 
-                        printf("Digite o ID do carro que ira ser alugado: ");
-                        scanf("%d",&id_carro);
-                        limpar_tela();
-                        linhas();
-                        printf("O carro %d foi selecionado \n",id_carro);
-                        printf("Carro [%d]:\n Nome: %s Marca: %s Tipo: %s \n",id_carro,cadastro_carro.nome, cadastro_carro.marca, cadastro_carro.tipo);
-                        printf("Vamos para os dados do aluguel! \n");
-                        fflush(stdin);
-                        linhas();
-                        printf("Digite o cpf do cliente:");
-                        fgets(aluguel.cpf_cliente, sizeof(aluguel.cpf_cliente), stdin);
-                        fflush(stdin);
-                        linhas();
-                        printf("Digite o numero de diarias:");
-                        fgets(aluguel.cpf_cliente, sizeof(aluguel.cpf_cliente), stdin);
-                        linhas();
-                        printf("Otimo!\nAgora para verificarmos\ntem certeza que deseja registrar o aluguel desse carro?\n");
-                        linhas();
-                        printf("Carro[%d]:\nNome:%sMarca:%sTipo:%s\n",id_carro,cadastro_carro.nome, cadastro_carro.marca, cadastro_carro.tipo);
-                        linhas();
-                        printf("Digite 1 para Sim\nDigite 2 para Nao\n");
-                        scanf("%d",&reposta_usuario);
-                        if(reposta_usuario == 1){
-                            printf("ALuguel registrado com sucesso \n");
-                            printf("Deseja sair da listagem? [1 - Sim]:");
-                            scanf("%d",&sair);
-                            if(sair == 1){
+                    while (true) {
+                        if (i_carro > 0) {
+                            printf("Carros disponíveis:\n");
+                            opcao_mostrar_carros(i_carro, registros_de_carros, valor_de_diaria);
+
+                            printf("Digite o ID do carro que será alugado: ");
+                            if (scanf("%d", &id_carro) != 1) {
                                 limpar_tela();
-                                break;
-                            }
-                            else{
-                                limpar_tela();
-                                printf("Opcao Invalida! Tente Novamente...\n");
+                                printf("Opção Inválida! Tente novamente.\n");
                                 linhas();
+                                while (getchar() != '\n'); // Limpa o buffer
+                                continue;
                             }
-                        }
-                        else{
+
                             limpar_tela();
+                            printf("Carro selecionado:\n");
+                            puts(registros_de_carros[id_carro]);
+                            linhas();
+
+                            // Validação do CPF
+                            while (true) {
+                                printf("Digite o CPF do cliente: ");
+                                scanf("%s", cpf_do_cliente);
+
+                                bool cpf_valido = true;
+                                for (int i = 0; i < strlen(cpf_do_cliente); i++) {
+                                    if (!isdigit(cpf_do_cliente[i])  || strlen(cpf_do_cliente) < 11 || strlen(cpf_do_cliente) > 11) {
+                                        cpf_valido = false;
+                                        break;
+                                    }
+                                }
+
+                                if (!cpf_valido) {
+                                    limpar_tela();
+                                    printf("Opção Inválida ou CPF incorreto! Tente novamente.\n");
+                                    linhas();
+                                } else {
+                                    break;
+                                }
+                            }
+
+                            // Validação do número de diárias
+                            while (true) {
+                                printf("Digite o número de diárias: ");
+                                if (scanf("%d", &diarias) != 1 || diarias <= 0) {
+                                    limpar_tela();
+                                    printf("Opção Inválida! Tente novamente.\n");
+                                    linhas();
+                                    while (getchar() != '\n'); // Limpa o buffer
+                                } else {
+                                    break;
+                                }
+                            }
+
+                            limpar_tela();
+                            printf("Resumo do Aluguel:\n");
+                            linhas();
+                            printf("Carro: %s", registros_de_carros[id_carro]);
+                            printf("CPF do cliente: %s\n", cpf_do_cliente);
+                            printf("Número de diárias: %d\n", diarias);
+                            printf("Total: R$%.2f\n", valor_de_diaria[id_carro] * diarias);
+                            linhas();
+
+                            printf("Deseja confirmar o aluguel? [1 - Sim | 0 - Não]: ");
+                            int confirmar;
+                            scanf("%d", &confirmar);
+                            if (confirmar == 1) {
+                                limpar_tela();
+                                printf("Aluguel registrado com sucesso!\n");
+                            } else {
+                                limpar_tela();
+                                printf("Operação cancelada.\n");
+                            }
+
+                            break; // Sai do loop principal
+                        } else {
+                            printf("Nenhum carro disponível para aluguel.\n");
+                            break;
                         }
                     }
-                }
             }
             break;
             case 4:
@@ -502,7 +574,7 @@ int main(){
                 while(true){
                     printf(" Você escolheu ver os créditos! [7]\n");
                     linhas();
-                    printf("Desenvolvido por:\nLucca de Sena\nMaximus Feitoza\nLeonardo Lucas1\nCauã Augusto\nRyan Emanuel\n");
+                    printf("Desenvolvido por:\nLucca de Sena\nMaximus Feitoza\nLeonardo Lucas\nCauã Augusto\nRyan Emanuel\n");
                     linhas();
                     printf("Deseja sair da listagem? [1 - Sim]: ");  // Tratamento!
                     if (scanf("%d", &sair_ou_nao) != 1){                    // Verifica se é um tipo diferente de inteiro.
