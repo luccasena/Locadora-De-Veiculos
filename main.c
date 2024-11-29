@@ -55,8 +55,8 @@ typedef struct CadastroCarros{
 
 typedef struct CadastroClientes {
         char    nomeDoUsuario[50];
-        char    cpf[11];
-        char    telefone[11];
+        char    cpf[20];
+        char    telefone[20];
 }Clientes;
 
 // 2.2 - Estrutura para o contrato do aluguel:
@@ -149,40 +149,9 @@ void opcao2_cadastrarClientes(Clientes *cadastro2) {
     printf("Digite seu nome: ");
     fgets(cadastro2->nomeDoUsuario, sizeof(cadastro2->nomeDoUsuario), stdin);
 
-    while (true) {
-        printf("Digite seu CPF: ");
-        fgets(cadastro2->cpf, sizeof(cadastro2->cpf), stdin);
+    printf("Digite seu CPF: ");
+    fgets(cadastro2->cpf, sizeof(cadastro2->cpf), stdin);
 
-        // Remove o '\n' do final da string se existir
-        size_t len = strlen(cadastro2->cpf);
-        if (len > 0 && cadastro2->cpf[len - 1] == '\n') {
-            cadastro2->cpf[len - 1] = '\0';
-        }
-
-        // Verifica se o CPF tem exatamente 11 caracteres e se são todos números
-        if (strlen(cadastro2->cpf) != 11) {
-            limpar_tela();
-            printf("CPF incorreto! O CPF deve ter 11 dígitos.\n");
-            linhas();
-            continue;
-        }
-
-        bool cpf_valido = true;
-        for (int i = 0; i < 11; i++) {
-            if (!isdigit(cadastro2->cpf[i])) {
-                cpf_valido = false;
-                break;
-            }
-        }
-
-        if (!cpf_valido) {
-            limpar_tela();
-            printf("CPF inválido! Certifique-se de digitar apenas números.\n");
-            linhas();
-        } else {
-            break;
-        }
-    }
     printf("Digite seu telefone: ");
     fgets(cadastro2->telefone, sizeof(cadastro2->telefone), stdin);
 
@@ -427,7 +396,7 @@ int main(){
                             linhas();
 
                             while (true){
-                                printf("Digite o número telefônico do cliente: ");
+                                printf("Digite o número do cliente: ");
                                 scanf("%s", numero_do_cliente);
                                 getchar();
 
